@@ -1,0 +1,20 @@
+@import "./variables";
+
+.button {
+  border: none;
+  border-radius: 50%;
+  height: 2rem;
+  width: 2rem;
+  background-color: rgba($color-white, 0.2);
+  outline: none;
+
+  &:hover {
+    background-color: rgba($color-white, 0.6);
+  }
+
+  &--close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+}
