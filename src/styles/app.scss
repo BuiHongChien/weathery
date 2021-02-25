@@ -1,5 +1,52 @@
 @import "./variables";
 
+
+@media (max-width: 320px) {
+  html {
+    font-size: 10%;
+  }
+}
+
+@media (min-width: 320px) {
+  html {
+    font-size: 27%;
+  }
+
+  // body{
+  //   overflow:hidden;
+  // }
+}
+
+@media (min-width: 480px) {
+  html {
+    font-size: 30%;
+  }
+}
+
+@media (min-width: 600px) {
+  html {
+    font-size: 37.5%;
+  }
+}
+
+@media (min-width: 801px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media (min-width: 1025px) {
+  html {
+    font-size: 62.5%;
+  }
+}
+
+@media (min-width: 1281px) {
+  html {
+    font-size: 75%;
+  }
+}
+
 *,
 *::after,
 *::before {
@@ -8,22 +55,19 @@
   box-sizing: inherit;
 }
 
-html {
-  font-size: 62.5%;
-}
-
 body {
   box-sizing: border-box;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
 }
 
 main {
   min-height: 100vh;
-  background-image: linear-gradient(
+  background: linear-gradient(
     to bottom,
     rgba($color-primary-1, 0.05),
     rgba($color-primary-2, 0.35)
   );
+  // background-image: url(styles/images/hanoi.jpg);
   padding: 2.5rem;
 }
 
@@ -44,27 +88,27 @@ main {
     border-radius: 1rem;
     background-color: rgba($color-white, 0.5);
     font-size: 1.5rem;
-    color:rgba($color-gray, 0.1);
+    color: rgba($color-gray, 0.1);
   }
 
-  input::placeholder{
-    color:rgba($color-gray, 0.5);
+  input::placeholder {
+    color: rgba($color-gray, 0.5);
   }
 
-  input:focus{
+  input:focus {
     background-color: rgba($color-white, 0.8);
-    box-shadow: 0px .8rem 2rem rgba($color-black, 0.1);
-    color:rgba($color-gray, 0.8);
+    box-shadow: 0px 0.8rem 2rem rgba($color-black, 0.1);
+    color: rgba($color-gray, 0.8);
 
-    &::placeholder{
-      color:rgba($color-gray, 0.2);
+    &::placeholder {
+      color: rgba($color-gray, 0.2);
     }
-}
+  }
 }
 
-.suggestion {
-  background-color: #f1f1f1;
-  color: gray;
-  font-size: 80%;
-  padding: 0.25rem 0.7rem;
-}
+// .suggestion {
+//   background-color: #f1f1f1;
+//   color: gray;
+//   font-size: 80%;
+//   padding: 0.25rem 0.7rem;
+// }

@@ -8,14 +8,13 @@ const Location = ({ location, id, deleteLocation, changeCurrentLocation }) => {
   const cityName = location.name.toLowerCase().replace(/\s/g, "");
   const cityFound = city.find((c) => c === cityName);
   cityImage = cityFound ? cityFound : cityImage;
-  // console.log(cityImage);
 
   return (
     <div
       className="location-box"
       onClick={(element) => changeCurrentLocation(element, id)}
       style={{
-        backgroundImage: `url(/images/${cityImage}.jpg)`,
+        backgroundImage: `linear-gradient(to right, #000000a6, #000000a6), url(/images/${cityImage}.jpg)`
       }}
     >
       <div className="location-box__city">

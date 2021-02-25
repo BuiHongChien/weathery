@@ -42,13 +42,12 @@ const CurrentLocation = ({ currentLocation }) => {
   const cityName = currentLocation.name.toLowerCase().replace(/\s/g, "");
   const cityFound = city.find((c) => c === cityName);
   cityImage = cityFound ? cityFound : cityImage;
-  console.log(currentLocation);
-
+  
   return (
     <div
       className="location"
       style={{
-        backgroundImage: `url(/images/${cityImage}.jpg)`,
+        backgroundImage: `linear-gradient(to right, #ffffff23, #ffffff23), url(/images/${cityImage}.jpg)`,
       }}
     >
       <div className="location--left">

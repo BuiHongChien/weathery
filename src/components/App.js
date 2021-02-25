@@ -20,7 +20,11 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
-    this.fetching();
+    if (localStorage.getItem("currentLocation") === null) {
+      this.fetching();
+    } else {
+      this.getItem();
+    }
   }
 
   isExists(city) {
@@ -50,7 +54,7 @@ export default class App extends React.Component {
             currentLocation: result,
             locations: [...this.state.locations, this.state.currentLocation],
             query: "",
-          });
+          }, ()=>this.setItem())
         }
       })
       .catch((err) => {
@@ -59,9 +63,24 @@ export default class App extends React.Component {
       });
   }
 
+  setItem() {
+    const { currentLocation, locations } = this.state;
+    localStorage.setItem("currentLocation", JSON.stringify(currentLocation));
+    localStorage.setItem("locations", JSON.stringify(locations));
+  }
+
+  getItem() {
+    this.setState({
+      query: "",
+      currentLocation: JSON.parse(localStorage.getItem("currentLocation")),
+      locations: JSON.parse(localStorage.getItem("locations")),
+    });
+  }
+
   search(event) {
     if (event.key === "Enter") {
       this.fetching();
+      this.setItem();
     }
   }
 
@@ -70,12 +89,12 @@ export default class App extends React.Component {
     if (this.isExists(id)) {
       let newLocations = [...this.state.locations];
       newLocations.splice(this.isExists(id), 1);
-      this.setState({ locations: newLocations });
+      this.setState({ locations: newLocations }, ()=>this.setItem())
     }
   }
 
   changeCurrentLocation(element, id) {
-    console.log(id);
+    // console.log(id);
     if (this.isExists(id)) {
       let newCurrentLocation = this.state.locations.find(
         (c) => c?.name?.toLowerCase() === id?.toLowerCase()
@@ -85,8 +104,8 @@ export default class App extends React.Component {
       this.setState({
         locations: newLocations,
         currentLocation: newCurrentLocation,
-        query:''
-      });
+        query: "",
+      }, ()=>this.setItem());
     }
   }
 
@@ -95,7 +114,7 @@ export default class App extends React.Component {
       return (
         <div className="location-container">
           {this.state.locations.map((location) => {
-            if (location) 
+            if (location)
               return (
                 <Location
                   location={location}
@@ -109,9 +128,7 @@ export default class App extends React.Component {
                   }
                 />
               );
-            }
-            // {this.test()}
-          )}
+          })}
         </div>
       );
     }
