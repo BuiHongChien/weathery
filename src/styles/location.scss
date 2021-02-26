@@ -45,7 +45,9 @@
       position: absolute;
       background:rgba($color-primary-1, 0.4);
       color: rgba($color-white, 0.9);
-      width: 10rem;
+      min-width: 10rem;
+      max-width: 20rem;
+      height: auto;
       text-align: center;
       font-size: 2.4rem;
       font-weight: 500;

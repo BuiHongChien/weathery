@@ -14,14 +14,27 @@ const api = {
 
 export default class App extends React.Component {
   state = {
-    query: "Saint Petersburg",
+    query: "",
     currentLocation: null,
+    currentLat: null,
+    currentLon: null,
     locations: [],
   };
 
   componentDidMount() {
     if (localStorage.getItem("currentLocation") === null) {
-      this.fetching();
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setState(
+            {
+              currentLat: position.coords.latitude,
+              currentLon: position.coords.longitude,
+            },
+            () => this.fetching()
+          );
+        },
+        (err) => this.setState({ query: "hanoi" }, () => this.fetching())
+      );
     } else {
       this.getItem();
     }
@@ -42,19 +55,33 @@ export default class App extends React.Component {
   }
 
   fetching() {
-    fetch(`${api.base}/weather?q=${this.state.query}&appid=${api.key}`)
+    let url =
+      this.state.query === ""
+        ? `${api.base}/weather?lat=${this.state.currentLat}&lon=${this.state.currentLon}&appid=${api.key}`
+        : `${api.base}/weather?q=${this.state.query}&appid=${api.key}`;
+    console.log(url);
+    fetch(url)
       .then((res) => {
         if (res.status === 200 && !this.isExists(this.state.query))
           return res.json();
         else throw Error(res.statusText);
       })
       .then((result) => {
+        console.log(result);
         if (!this.isExists(this.state.query)) {
-          this.setState({
-            currentLocation: result,
-            locations: [...this.state.locations, this.state.currentLocation],
-            query: "",
-          }, ()=>this.setItem())
+          this.setState(
+            {
+              currentLocation: result,
+              locations: [...this.state.locations, this.state.currentLocation],
+              query: "",
+              currentLat: result.coord.lat,
+              currentLon: result.coord.lon,
+            },
+            () => {
+              console.log(this.state);
+              this.setItem();
+            }
+          );
         }
       })
       .catch((err) => {
@@ -89,23 +116,27 @@ export default class App extends React.Component {
     if (this.isExists(id)) {
       let newLocations = [...this.state.locations];
       newLocations.splice(this.isExists(id), 1);
-      this.setState({ locations: newLocations }, ()=>this.setItem())
+      this.setState({ locations: newLocations }, () => this.setItem());
     }
   }
 
   changeCurrentLocation(element, id) {
-    // console.log(id);
     if (this.isExists(id)) {
       let newCurrentLocation = this.state.locations.find(
         (c) => c?.name?.toLowerCase() === id?.toLowerCase()
       );
       let newLocations = [...this.state.locations, this.state.currentLocation];
       newLocations.splice(this.isExists(id), 1);
-      this.setState({
-        locations: newLocations,
-        currentLocation: newCurrentLocation,
-        query: "",
-      }, ()=>this.setItem());
+      this.setState(
+        {
+          locations: newLocations,
+          currentLocation: newCurrentLocation,
+          currentLat: newCurrentLocation.coord.lat,
+          currentLon: newCurrentLocation.coord.lon,
+          query: "",
+        },
+        () => this.setItem()
+      );
     }
   }
 
