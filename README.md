@@ -3,6 +3,11 @@
 ## Live demo
 [Weathery]()
 
+
+GIF demo
+
+![weathery](https://github.com/BuiHongChien/weathery/blob/master/src/weathery-demo.gif)
+
 ## Table of contents:
 - Introduction
 - Description
