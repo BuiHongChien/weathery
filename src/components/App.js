@@ -189,6 +189,7 @@ export default class App extends React.Component {
   };
 
   changeCurrentLocation = (element, id) => {
+    console.log(id)
     if (this.isExists(id)) {
       let newCurrentLocation = this.state.locations.find(
         (c) => c?.name?.toLowerCase() === id?.toLowerCase()
