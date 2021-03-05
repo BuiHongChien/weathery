@@ -1,0 +1,72 @@
+@import "./variables";
+
+
+@media (max-width: 320px) {
+  html {
+    font-size: 10%;
+  }
+}
+
+@media (min-width: 320px) {
+  html {
+    font-size: 27%;
+  }
+
+  // body{
+  //   overflow:hidden;
+  // }
+}
+
+@media (min-width: 480px) {
+  html {
+    font-size: 30%;
+  }
+}
+
+@media (min-width: 600px) {
+  html {
+    font-size: 37.5%;
+  }
+}
+
+@media (min-width: 801px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media (min-width: 1025px) {
+  html {
+    font-size: 62.5%;
+  }
+}
+
+@media (min-width: 1281px) {
+  html {
+    font-size: 75%;
+  }
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+body {
+  box-sizing: border-box;
+  font-family: "Courier New", monospace;
+}
+
+main {
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgba($color-primary-1, 0.05),
+    rgba($color-primary-2, 0.35)
+  );
+  // background-image: url(styles/images/hanoi.jpg);
+  padding: 2.5rem;
+}
