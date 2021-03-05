@@ -1,6 +1,6 @@
 import React from "react";
 
-import { city } from "./utils/minsc";
+import { citiesImage } from "./utils/minsc";
 
 const CurrentLocation = ({ currentLocation }) => {
   const dateBuilder = (d) => {
@@ -40,7 +40,7 @@ const CurrentLocation = ({ currentLocation }) => {
 
   let cityImage = "default";
   const cityName = currentLocation.name.toLowerCase().replace(/\s/g, "");
-  const cityFound = city.find((c) => c === cityName);
+  const cityFound = citiesImage.find((c) => c === cityName);
   cityImage = cityFound ? cityFound : cityImage;
   
   return (

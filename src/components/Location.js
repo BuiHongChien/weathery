@@ -1,12 +1,12 @@
 import React from "react";
 
-import { city } from "./utils/minsc";
+import { citiesImage } from "./utils/minsc";
 import "../styles/_button.scss";
 
 const Location = ({ location, id, deleteLocation, changeCurrentLocation }) => {
   let cityImage = "default";
   const cityName = location.name.toLowerCase().replace(/\s/g, "");
-  const cityFound = city.find((c) => c === cityName);
+  const cityFound = citiesImage.find((c) => c === cityName);
   cityImage = cityFound ? cityFound : cityImage;
 
   return (
@@ -31,7 +31,7 @@ const Location = ({ location, id, deleteLocation, changeCurrentLocation }) => {
             deleteLocation(element, id);
           }}
         >
-          x
+          <i className="fa fa-trash-o icons" ></i>
         </button>
       </div>
 

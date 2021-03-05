@@ -3,8 +3,8 @@
 .button {
   border: none;
   border-radius: 50%;
-  height: 2rem;
-  width: 2rem;
+  height: 2.5rem;
+  width: 2.5rem;
   background-color: rgba($color-white, 0.2);
   outline: none;
 
@@ -16,5 +16,6 @@
     position: absolute;
     top: 1rem;
     right: 1rem;
+    font-size: 1rem;
   }
 }

@@ -1,8 +1,13 @@
 import React from "react";
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete";
 
 import CurrentLocation from "./CurrentLocation";
 import Location from "./Location";
-// import Search from './Search'
+import data from "./data/data.json";
+import { cities } from "./utils/minsc";
 
 import "../styles/app.scss";
 import "../styles/location.scss";
@@ -19,6 +24,9 @@ export default class App extends React.Component {
     currentLat: null,
     currentLon: null,
     locations: [],
+    suggestions: [],
+    hoveredLocation: null,
+    data: cities(data),
   };
 
   componentDidMount() {
@@ -40,7 +48,7 @@ export default class App extends React.Component {
     }
   }
 
-  isExists(city) {
+  isExists = (city) => {
     let exists = false;
     if (this.state.currentLocation?.name?.toLowerCase() === city?.toLowerCase())
       return true;
@@ -52,9 +60,9 @@ export default class App extends React.Component {
       else return false;
     }
     return false;
-  }
+  };
 
-  fetching() {
+  fetching = () => {
     let url =
       this.state.query === ""
         ? `${api.base}/weather?lat=${this.state.currentLat}&lon=${this.state.currentLon}&appid=${api.key}`
@@ -88,39 +96,99 @@ export default class App extends React.Component {
         this.setState({ query: "" });
         console.error(err);
       });
-  }
+  };
 
-  setItem() {
+  setItem = () => {
     const { currentLocation, locations } = this.state;
     localStorage.setItem("currentLocation", JSON.stringify(currentLocation));
     localStorage.setItem("locations", JSON.stringify(locations));
-  }
+  };
 
-  getItem() {
+  getItem = () => {
     this.setState({
       query: "",
       currentLocation: JSON.parse(localStorage.getItem("currentLocation")),
       locations: JSON.parse(localStorage.getItem("locations")),
     });
-  }
+  };
 
-  search(event) {
+  search = (event) => {
     if (event.key === "Enter") {
-      this.fetching();
-      this.setItem();
+      this.setState({ suggestions: [] }, () => {
+        this.fetching();
+        this.setItem();
+      });
     }
+  };
+
+  onTextChange = (event) => {
+    const value = event.target.value;
+    let suggestions = [];
+    if (value.length > 0) {
+      const regex = new RegExp(`^${value}`, "i");
+      // console.log(this.state.data)
+      suggestions = this.state.data
+        ?.filter((city) => regex.test(city))
+        .slice(0, 10);
+    }
+
+    this.setState(() => ({
+      suggestions,
+      query: value,
+    }));
+  };
+
+  selectedText = (value) => {
+    this.setState(
+      {
+        query: value,
+        suggestions: [],
+      },
+      () => {
+        console.log("fetching...");
+        this.fetching();
+        this.setItem();
+      }
+    );
+  };
+
+  handleOnClickSuggestion=(item)=>{
+    console.log("li tag was clicked")
   }
 
-  deleteLocation(element, id) {
-    console.log(id);
+  renderSuggestions = () => {
+    let { suggestions } = this.state;
+    if (suggestions.length === 0) return null;
+
+    return (
+      <ul
+        className="search-box__suggestions"
+      >
+        {suggestions.map((item, index) => {
+          return (
+            <li
+              key={index}
+              onClick={()=>this.handleOnClickSuggestion(item)}
+              className="search-box__suggestion"
+            >
+              {item}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
+  deleteLocation = (element, id) => {
+    // console.log(id);
     if (this.isExists(id)) {
       let newLocations = [...this.state.locations];
       newLocations.splice(this.isExists(id), 1);
       this.setState({ locations: newLocations }, () => this.setItem());
     }
-  }
+  };
 
-  changeCurrentLocation(element, id) {
+  changeCurrentLocation = (element, id) => {
     if (this.isExists(id)) {
       let newCurrentLocation = this.state.locations.find(
         (c) => c?.name?.toLowerCase() === id?.toLowerCase()
@@ -138,9 +206,9 @@ export default class App extends React.Component {
         () => this.setItem()
       );
     }
-  }
+  };
 
-  renderLocations() {
+  renderLocations = () => {
     if (this.state.locations.length > 1) {
       return (
         <div className="location-container">
@@ -163,21 +231,23 @@ export default class App extends React.Component {
         </div>
       );
     }
-  }
+  };
+
   render() {
     return (
       <div>
         <main>
           <div className="search-box">
-            {/* <Search /> */}
             <input
+              id="query"
               type="text"
               className="search-box__bar"
               placeholder="Enter city name, country,..."
-              onChange={(event) => this.setState({ query: event.target.value })}
-              value={this.state.query}
               onKeyPress={(event) => this.search(event)}
+              onChange={this.onTextChange}
+              value={this.state.query}
             />
+            {this.renderSuggestions()}
           </div>
           {this.state.currentLocation ? (
             <CurrentLocation currentLocation={this.state.currentLocation} />
