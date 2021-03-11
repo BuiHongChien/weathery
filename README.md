@@ -1,7 +1,7 @@
 # Weathery app
 
 ## Live demo
-[Weathery]()
+[Weathery](https://wonderful-newton-9bd53a.netlify.app/)
 
 
 GIF demo
