@@ -27,6 +27,7 @@ export default class App extends React.Component {
     suggestions: [],
     hoveredLocation: null,
     data: cities(data),
+    favorites: [],
   };
 
   componentDidMount() {
@@ -99,9 +100,10 @@ export default class App extends React.Component {
   };
 
   setItem = () => {
-    const { currentLocation, locations } = this.state;
+    const { currentLocation, locations, favorites } = this.state;
     localStorage.setItem("currentLocation", JSON.stringify(currentLocation));
     localStorage.setItem("locations", JSON.stringify(locations));
+    localStorage.setItem("favorites", JSON.stringify(favorites));
   };
 
   getItem = () => {
@@ -109,6 +111,7 @@ export default class App extends React.Component {
       query: "",
       currentLocation: JSON.parse(localStorage.getItem("currentLocation")),
       locations: JSON.parse(localStorage.getItem("locations")),
+      favorites: JSON.parse(localStorage.getItem("favorites")),
     });
   };
 
@@ -152,23 +155,21 @@ export default class App extends React.Component {
     );
   };
 
-  handleOnClickSuggestion=(item)=>{
-    console.log("li tag was clicked")
-  }
+  handleOnClickSuggestion = (item) => {
+    console.log("li tag was clicked");
+  };
 
   renderSuggestions = () => {
     let { suggestions } = this.state;
     if (suggestions.length === 0) return null;
 
     return (
-      <ul
-        className="search-box__suggestions"
-      >
+      <ul className="search-box__suggestions">
         {suggestions.map((item, index) => {
           return (
             <li
               key={index}
-              onClick={()=>this.handleOnClickSuggestion(item)}
+              onClick={() => this.handleOnClickSuggestion(item)}
               className="search-box__suggestion"
             >
               {item}
@@ -189,7 +190,7 @@ export default class App extends React.Component {
   };
 
   changeCurrentLocation = (element, id) => {
-    console.log(id)
+    console.log(id);
     if (this.isExists(id)) {
       let newCurrentLocation = this.state.locations.find(
         (c) => c?.name?.toLowerCase() === id?.toLowerCase()
@@ -209,6 +210,23 @@ export default class App extends React.Component {
     }
   };
 
+  selectedFavorite=(element, id)=>{
+    if(this.isExists(id)){
+      if(this.state.favorites.indexOf(id)!==-1){
+        const index=this.state.favorites.indexOf(id)
+        console.log(index)
+        const newFavorites=this.state.favorites.splice(index, 1)
+
+        this.setState({favorites:newFavorites}, ()=>this.setItem())
+      } else {
+        const newFavorites=this.state.favorites
+        newFavorites.push(id)
+        this.setState({favorites:newFavorites}, ()=>this.setItem())
+      }
+    }
+    console.log(this.state.favorites)
+  } 
+
   renderLocations = () => {
     if (this.state.locations.length > 1) {
       return (
@@ -218,10 +236,14 @@ export default class App extends React.Component {
               return (
                 <Location
                   location={location}
+                  favorites={this.state.favorites}
                   id={location.name}
                   key={location.name}
                   deleteLocation={(element, id) =>
                     this.deleteLocation(element, id)
+                  }
+                  selectedFavorite={(element, id) =>
+                    this.selectedFavorite(element, id)
                   }
                   changeCurrentLocation={(element, id) =>
                     this.changeCurrentLocation(element, id)
@@ -251,7 +273,12 @@ export default class App extends React.Component {
             {this.renderSuggestions()}
           </div>
           {this.state.currentLocation ? (
-            <CurrentLocation currentLocation={this.state.currentLocation} />
+            <CurrentLocation
+              currentLocation={this.state.currentLocation}
+              selectedFavorite={(element, id) =>
+                this.selectedFavorite(element, id)
+              }
+            />
           ) : null}
           {this.state.locations.length > 1 ? this.renderLocations() : null}
         </main>

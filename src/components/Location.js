@@ -3,27 +3,48 @@ import React from "react";
 import { citiesImage } from "./utils/minsc";
 import "../styles/_button.scss";
 
-const Location = ({ location, id, deleteLocation, changeCurrentLocation }) => {
+const Location = ({
+  location,
+  favorites,
+  id,
+  deleteLocation,
+  changeCurrentLocation,
+  selectedFavorite,
+}) => {
   let cityImage = "default";
   const cityName = location.name.toLowerCase().replace(/\s/g, "");
   const cityFound = citiesImage.find((c) => c === cityName);
   cityImage = cityFound ? cityFound : cityImage;
+
+  let selected = favorites?.indexOf(id) !== -1 ? true : false;
+  let buttonFavorite=`button button--favorite ${selected?'selected':''}`
 
   return (
     <div
       className="location-box"
       onClick={(element) => changeCurrentLocation(element, id)}
       style={{
-        backgroundImage: `linear-gradient(to right, #000000a6, #000000a6), url(/images/${cityImage}.jpg)`
+        backgroundImage: `linear-gradient(to right, #000000a6, #000000a6), url(/images/${cityImage}.jpg)`,
       }}
     >
       <div className="location-box__city">
         <div className="location-box__name">{location.name}</div>
         <div className="location-box__temp">
-        <img className='location-box__icon' src={`http://openweathermap.org/img/w/${location.weather[0].icon}.png`} />
+          <img
+            className="location-box__icon"
+            src={`http://openweathermap.org/img/w/${location.weather[0].icon}.png`}
+          />
           {Math.round(location?.main?.temp - 273)}
           <span>&#176;</span>C
         </div>
+        <button
+          className={buttonFavorite}
+          onClick={(element) => {
+            element.stopPropagation();
+            selectedFavorite(element, id);
+          }}
+        >
+        </button>
         <button
           className="button button--close"
           onClick={(element) => {
@@ -31,7 +52,7 @@ const Location = ({ location, id, deleteLocation, changeCurrentLocation }) => {
             deleteLocation(element, id);
           }}
         >
-          <i className="fa fa-trash-o icons" ></i>
+          <i className="fa fa-trash-o icons"></i>
         </button>
       </div>
 
@@ -63,7 +84,6 @@ const Location = ({ location, id, deleteLocation, changeCurrentLocation }) => {
         </div>
       </div>
     </div>
-    // <div></div>
   );
 };
 

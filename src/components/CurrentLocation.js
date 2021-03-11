@@ -1,6 +1,7 @@
 import React from "react";
 
 import { citiesImage } from "./utils/minsc";
+// import Favorite from './Favorite';
 
 const CurrentLocation = ({ currentLocation }) => {
   const dateBuilder = (d) => {
@@ -50,6 +51,7 @@ const CurrentLocation = ({ currentLocation }) => {
         backgroundImage: `linear-gradient(to right, #ffffff23, #ffffff23), url(/images/${cityImage}.jpg)`,
       }}
     >
+      {/* <Favorite name={currentLocation?.name} /> */}
       <div className="location--left">
         <div className="location__info">
           <div className="location__city">
