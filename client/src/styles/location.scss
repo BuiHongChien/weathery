@@ -1,0 +1,222 @@
+@import "./variables";
+
+.location {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: auto;
+  width: 100%;
+  border-radius: 1rem;
+  box-shadow: 0 1rem 1rem rgba($color-black, 0.1);
+  padding: 1.5rem 2.5rem;
+  font-size: 2rem;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  color: $color-gray;
+
+  &-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  &-box {
+    padding: 0.5rem;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 40rem;
+    height: auto;
+    margin: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 1rem 1rem rgba($color-black, 0.02);
+    color: $color-gray;
+
+    &__city {
+      position: relative;
+      height: 6rem;
+    }
+
+    &__name {
+      position: absolute;
+      background:rgba($color-primary-1, 0.4);
+      color: rgba($color-white, 0.9);
+      min-width: 10rem;
+      max-width: 20rem;
+      height: auto;
+      text-align: center;
+      font-size: 2.4rem;
+      font-weight: 500;
+      top: 1.2rem;
+      left: 1.4rem;
+    }
+
+    &__icon{
+      width: 4rem;
+      height: 4rem;
+    }
+
+    &__temp {
+      position: absolute;
+      top: 1.2rem;
+      right: 12%;
+      font-size: 4rem;
+      color: rgba($color-white, 0.9);
+    }
+
+    &__details {
+      // margin-top: 6rem;
+    }
+
+    &__weather {
+      padding: 0.3rem;
+      height: auto;
+      background-color: rgba($color-white, 0.7);
+      margin: 1rem;
+      padding: 0.4rem;
+      font-size: 1.6rem;
+      display: flex;
+      justify-content: space-between;
+      box-shadow: 0 1rem 1rem rgba($color-black, 0.05);
+    }
+  }
+
+  &--left {
+    width: 45%;
+    margin: 0.6rem;
+  }
+
+  &--right {
+    width: 45%;
+    margin: 0.6rem;
+  }
+
+  &__info{
+    width: auto;
+    height: auto;
+    background-color: rgba($color-white, 0.85);
+    border-radius: 1rem;
+    padding: 5%;
+  }
+
+  &__icon{
+    width: 8rem;
+    height: 8rem;
+  }
+
+  &__city {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+
+  &__date-time {
+    font-style: italic;
+    font-size: 1.5rem;
+
+    sup{
+      font-size: x-small;
+    }
+  }
+
+  &__temp {
+    padding: 1rem 0;
+    font-size: 7rem;
+    text-align: center;
+  }
+  
+  &__des{
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 1rem 0;
+
+    &::first-letter{
+      text-transform: capitalize
+    }
+  }
+
+  &__weather {
+    background-color: rgba($color-white, 0.85);
+    margin: 0.5rem 0;
+    padding: 0.7rem 1.2rem;
+    height: auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 1rem 1rem rgba($color-black, 0.05);
+  }
+}
+
+.search-box {
+  width: 100%;
+  margin: 0 0 5rem;
+  position: relative;
+
+  &__bar {
+    display: block;
+    width: 100%;
+    padding: 1.5rem;
+
+    appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+
+    border-radius: 1rem;
+    background-color: rgba($color-white, 0.5);
+    font-size: 1.5rem;
+    color: rgba($color-gray, 0.1);
+  }
+
+  &__suggestions{
+    display: none;
+    position: absolute;
+    width: 100%;
+    top: 4.6rem;
+    font-size: 1.5rem;
+    left:0;
+    right: 0;
+    z-index: 10;
+    padding: 0;
+    margin: 0;
+    border-top: solid .03rem rgba($color-gray, .3);
+    box-shadow: 0 1rem 1rem rgba($color-black, 0.1);
+    border-radius: .2rem;
+    background-color: rgba($color-white, 1);
+  }
+
+  &__suggestion{
+    display: block;
+    padding: 1.5rem;
+
+    &:hover{
+      background-color: rgba($color-gray, .1);
+    }
+  }
+
+  input{
+    font-family: inherit;
+  }
+
+  input::placeholder {
+    color: rgba($color-gray, 0.5);
+  }
+
+  input:focus {
+    background-color: rgba($color-white, 0.8);
+    box-shadow: 0px 0.8rem 2rem rgba($color-black, 0.1);
+    color: rgba($color-gray, 0.8);
+
+    &::placeholder {
+      color: rgba($color-gray, 0.2);
+    }
+
+    &+.search-box__suggestions{
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+@import "./variables";
+
+.button {
+  border: none;
+  height: 2.5rem;
+  width: 2.5rem;
+  background-color: transparent;
+  outline: none;
+  // font-size: 1rem !important;
+
+  &--close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;  
+    font-size: 2rem !important;
+  }
+
+  &--favorite{
+    position: absolute;
+    top: 4rem;
+    right: 1rem;
+    font-size: 1rem !important;
+  }
+}
+
+.selected{
+  color: #d71900;
+
+  &:hover {
+    // color: #d71900;
+  }
+}
+
+.icon{
+  z-index: 10;
+  color: rgba($color-white, .8);
+  font-size:2rem ;
+}
