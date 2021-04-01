@@ -6,7 +6,7 @@
 
 GIF demo
 
-![weathery](https://github.com/BuiHongChien/weathery/blob/master/src/weathery-demo.gif)
+![weathery](https://github.com/BuiHongChien/weathery/blob/master/client/src/weathery-demo.gif)
 
 ## Table of contents:
 - Introduction
