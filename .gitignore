@@ -1,0 +1,28 @@
+
+# dependencies
+/client/node_modules
+/server/node_modules
+/cleint/package-lock.json
+/server/package-lock.json
+/client/.pnp
+/client/public/images
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/client/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+/client/npm-debug.log*
+/client/yarn-debug.log*
+/client/yarn-error.log*
+
+.vercel
