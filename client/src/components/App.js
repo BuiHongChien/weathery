@@ -9,6 +9,7 @@ import CurrentLocation from "./CurrentLocation";
 import Location from "./Location";
 import data from "./data/data.json";
 import { cities } from "./utils/minsc";
+import FavoriteList from './FavoriteList'
 
 import "../styles/app.scss";
 import "../styles/location.scss";
@@ -29,22 +30,18 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
-    axios.get(`http://localhost:5000/location`).then(
+    axios.get(`${api}/location`).then(
       res=>{
-        // console.log(res.data)
         if(res.data.length===0){
           navigator.geolocation.getCurrentPosition(
                 (position) => {
-                  // console.log(position)
                     this.fetching({lat:position.coords.latitude, lon:position.coords.longitude})
                 },
                 (err) => this.setState({ query: "hanoi" }, () => this.fetching({name:'hanoi'}))
               );
         }
         else{
-          const favorites=res.data.filter(l=>{
-            if(l.isFavorite) return l._id
-          })
+          const favorites=res.data.filter(l=>l.isFavorite).map(f=>f._id);
           const currentLocation=res.data.filter(l=>l.isCurrentLocation)
 
           this.setState({
@@ -54,8 +51,7 @@ export default class App extends React.Component {
             currentLat:currentLocation[0].coord.lat,
             currentLon:currentLocation[0].coord.lon
           })
-        }
-      }
+        }}
     )
   }
 
@@ -64,11 +60,12 @@ export default class App extends React.Component {
     axios.post(`${api}/location`, position).then(res=>{
       if(res.data.doc){
       this.setState({
+        query:'',
         locations:[...this.state.locations,res.data.doc],
         currentLocation:res.data.doc,
         currentLat:res.data.doc.coord.lat,
         currentLon:res.data.doc.coord.lon
-      }, ()=>console.log(this.state))}
+      },()=>console.log(this.state))}
     })
   };
 
@@ -138,72 +135,52 @@ export default class App extends React.Component {
 
   deleteLocation = (element, id) => {
     axios.delete(`${api}/location/${id}`).then(res=>{
-      console.log(res)
+      if(res.data.message){
       let newLocations = [...this.state.locations];
-      newLocations.splice(this.isExists(id), 1);
-      this.setState({ locations: newLocations });
+      const deleteLocation=newLocations.find(l=>l._id===id)
+      newLocations.splice(newLocations.indexOf(deleteLocation), 1);
+
+      this.setState({ locations: newLocations },()=>console.log(this.state));}
     })
   };
 
   changeCurrentLocation = (element, id) => {
     console.log(id);
     axios.put(`${api}/location/${id}`).then(res=>{
-      console.log(res.doc)
-
-      this.setState({
-        // currentLocation:
-      })
+      if(res.data.message){
+        console.log("successful")
+        const newCurrentLocation=this.state.locations.find(l=>l._id===id)
+        this.setState({
+          currentLocation:newCurrentLocation,
+          currentLat:newCurrentLocation.coord.lat,
+          currentLon:newCurrentLocation.coord.lon
+        }, ()=>console.log(this.state))
+    }
 
     })
-    // if (this.isExists(id)) {
-    //   let newCurrentLocation = this.state.locations.find(
-    //     (c) => c?.name?.toLowerCase() === id?.toLowerCase()
-    //   );
-    //   let newLocations = [...this.state.locations, this.state.currentLocation];
-    //   newLocations.splice(this.isExists(id), 1);
-    //   this.setState(
-    //     {
-    //       locations: newLocations,
-    //       currentLocation: newCurrentLocation,
-    //       currentLat: newCurrentLocation.coord.lat,
-    //       currentLon: newCurrentLocation.coord.lon,
-    //       query: "",
-    //     },
-    //     () => this.setItem()
-    //   );
     }
   
 
   addToFavorites = (element, id) => {
     console.log(id);
     axios.put(`${api}/favorite/${id}`).then(res=>{
-      console.log(res);
+      if(res.data.message){
 
       const newFavorites = this.state.favorites;
       newFavorites.push(id);
-      this.setState({ favorites:[...this.state.favorites, id] });
+      this.setState({ favorites:newFavorites},()=>console.log(this.state));}
     })
-    // if (this.isExists(id)) {
-    //   const newFavorites = this.state.favorites;
-    //   newFavorites.push(id);
-    //   this.setState({ favorites: newFavorites }, () => this.setItem());
-    // }
   };
 
   removeFavorite = (element, id) => {
     axios.put(`${api}/favorite/${id}`).then(res=>{
-      console.log(res);
-
+      if(res.data.message){
       const newFavorites=this.state.favorites;
       const index = newFavorites.indexOf(id);
       newFavorites.splice(index, 1);
-      this.setState({ favorites: newFavorites });
+
+      this.setState({ favorites: newFavorites },()=>console.log(this.state));}
     })
-    // if (this.isExists(id)) {
-    //   const index = this.state.favorites.indexOf(id);
-    //   this.state.favorites.splice(index, 1);
-    //   this.setState({ favorites: this.state.favorites }, () => this.setItem());
-    // }
   };
 
   renderLocations = () => {
@@ -211,13 +188,14 @@ export default class App extends React.Component {
       return (
         <div className="location-container">
           {this.state.locations.map((location) => {
-            if(location.isCurrentLocation) return
+            //  console.log(location)
+            if(location._id===this.state.currentLocation._id) return
             if (location)
               return (
                 <Location
                   location={location}
                   favorites={this.state.favorites}
-                  id={location.name}
+                  id={location._id}
                   key={location.name}
                   deleteLocation={(element, id) =>
                     this.deleteLocation(element, id)
@@ -258,12 +236,10 @@ export default class App extends React.Component {
           {this.state.currentLocation ? (
             <CurrentLocation
               currentLocation={this.state.currentLocation}
-              // selectedFavorite={(element, id) =>
-              //   this.selectedFavorite(element, id)
-              // }
             />
           ) : null}
           {this.state.locations.length > 1 ? this.renderLocations() : null}
+          {/* <FavoriteList/> */}
         </main>
       </div>
     );

@@ -7,6 +7,7 @@ const Bluebird = require("bluebird");
 
 const minsc = require("./utils/minsc");
 
+
 fetch.Promise = Bluebird;
 
 const app = express();
@@ -23,7 +24,7 @@ app.all('*', function(req, res, next) {
 });
 
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost:27017/online-test", {
+mongoose.connect("mongodb://localhost:27017/weathery", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -66,7 +67,6 @@ app.post("/location", (req, res) => {
       pos.lat
         ? `${api.base}/weather?lat=${pos.lat}&lon=${pos.lon}&appid=${api.key}`
         : `${api.base}/weather?q=${pos.name}&appid=${api.key}`;
-    // console.log(url);
 
   try {
     fetch(url)
@@ -80,12 +80,13 @@ app.post("/location", (req, res) => {
         const isExists=await Location.exists({name: result.name})
 
         if(!isExists){
+          Location.update({isCurrentLocation:true}, {isCurrentLocation:false}, (err,doc)=>{
+            // console.log(doc)
+          })
+
           result.isCurrentLocation=true;
           result.isFavorite=false
-
-          Location.update({isCurrentLocation:true}, {isCurrentLocation:false}, (err,doc)=>{
-            console.log(doc)
-          })
+          // console.log(result)
 
           const location = new Location(result);
             location.save((err, doc) => {
@@ -109,7 +110,7 @@ app.put('/location/:id', (req,res)=>{
       console.log(doc)
     })
     Location.update({_id:req.params.id}, {isCurrentLocation:true}, (err,doc)=>{
-      return res.json({doc})
+      return res.json({message:'successful'})
     })
   }catch(err){
     console.error(err.message)
@@ -155,7 +156,7 @@ app.put("/favorite/:id", async (req, res) => {
   try {
     await Location.findById(req.params.id).exec((err, doc)=>{
       Location.findByIdAndUpdate(doc.id, {isFavorite:!doc.isFavorite}, {new:true}, (err, doc)=>{
-        res.json({err, doc})
+        res.json({message:'successful'})
       })
     })
   } catch (err) {

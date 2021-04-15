@@ -34,5 +34,8 @@ Allows the user to search for the weather in any city in the world
 - ES6
 - SASS
 - ReactJS
+- NodeJS
+- ExpressJS
+- MongoDB
 - VSCode
 

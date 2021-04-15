@@ -153,7 +153,7 @@
 
 .search-box {
   width: 100%;
-  margin: 0 0 5rem;
+  margin:3rem 0 5rem 0;
   position: relative;
 
   &__bar {
@@ -218,5 +218,18 @@
     &+.search-box__suggestions{
       display: block;
     }
+  }
+}
+
+.favorite-list{
+  position: absolute;
+  top: 0;
+  right: 2.5rem;
+  // width: 3rem;
+  // height: 3rem;
+
+  &-icon{
+    color: rgba($color-red, 0.8);
+    font-size: 3rem;
   }
 }

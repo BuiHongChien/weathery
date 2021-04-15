@@ -1,4 +1,7 @@
 import React from "react";
+import { FaHeart } from "react-icons/fa";
+import { BiHeart } from "react-icons/bi";
+import { FaTrash } from "react-icons/fa";
 
 import { citiesImage } from "./utils/minsc";
 import "../styles/_button.scss";
@@ -12,7 +15,7 @@ const Location = ({
   addToFavorites,
   removeFavorite,
 }) => {
-  console.log(favorites);
+  // console.log(favorites);
 
   let cityImage = "default";
   const cityName = location.name.toLowerCase().replace(/\s/g, "");
@@ -38,17 +41,18 @@ const Location = ({
           <span>&#176;</span>C
         </div>
         <button
-          className={`button button--favorite ${
-            favorites?.indexOf(id) === -1 ? "" : "selected"
-          }`}
+          // icon={favorites.indexOf(id)===-1?'heart outline':'heart'}
+          className={`button button--favorite`}
           onClick={(element) => {
             element.stopPropagation();
             if (favorites.indexOf(id) === -1) addToFavorites(element, id);
             else removeFavorite(element, id);
           }}
-        ><i className={`gg-heart icon ${
-          favorites?.indexOf(id) === -1 ? "" : "selected"
-        }`}></i></button>
+        >
+          {
+            favorites.indexOf(id)===-1? <BiHeart className='bi-heart' />:<FaHeart className='fa-heart' />
+          }
+        </button>
         <button
           className="button button--close"
           onClick={(element) => {
@@ -56,7 +60,8 @@ const Location = ({
             deleteLocation(element, id);
           }}
         >
-          <i className="gg-trash-empty icon"></i>
+          
+          <FaTrash className='fa-trash'/>
         </button>
       </div>
 

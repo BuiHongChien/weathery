@@ -19,16 +19,20 @@
     position: absolute;
     top: 4rem;
     right: 1rem;
-    font-size: 1rem !important;
+    font-size: 2rem !important;
   }
 }
 
-.selected{
-  color: #d71900;
+.bi-heart{
+  color: rgba($color-white, .8);
+}
 
-  &:hover {
-    // color: #d71900;
-  }
+.fa-heart{
+  color: rgba($color-red, .8);
+}
+
+.fa-trash{
+  color: rgba($color-white, .8);
 }
 
 .icon{
