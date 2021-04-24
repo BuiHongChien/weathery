@@ -58,7 +58,8 @@ app.get("/location", async (req, res) => {
 });
 
 // @route POST /location
-// @desc post a new location
+// @desc post a new location with url 
+// for example "https://api.openweathermap.org/data/2.5/waether?q=moscow&appid=27bc22d487c2a65e234d4e0b38ed147f"
 // @access public
 app.post("/location", (req, res) => {
   const pos = req.body;
@@ -81,12 +82,10 @@ app.post("/location", (req, res) => {
 
         if(!isExists){
           Location.update({isCurrentLocation:true}, {isCurrentLocation:false}, (err,doc)=>{
-            // console.log(doc)
           })
 
           result.isCurrentLocation=true;
           result.isFavorite=false
-          // console.log(result)
 
           const location = new Location(result);
             location.save((err, doc) => {

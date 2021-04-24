@@ -24,7 +24,8 @@ export default class App extends React.Component {
     currentLon: null,
     locations: [],
     suggestions: [],
-    hoveredLocation: null,
+    isError:false,
+    // hoveredLocation: null,
     data: cities(data),
     favorites: [],
   };
@@ -58,6 +59,7 @@ export default class App extends React.Component {
   fetching = (position) => {
     // console.log(position)
     axios.post(`${api}/location`, position).then(res=>{
+      // console.log(res.data)
       if(res.data.doc){
       this.setState({
         query:'',
@@ -66,8 +68,19 @@ export default class App extends React.Component {
         currentLat:res.data.doc.coord.lat,
         currentLon:res.data.doc.coord.lon
       },()=>console.log(this.state))}
+      else{
+        this.setState({isError:true}, ()=>console.log(this.state))
+      }
     })
   };
+
+  renderError=()=>{
+    return(
+      <div className='error-container'>
+        City not found!
+      </div>
+    )
+  }
 
   search = (event) => {
     if (event.key === "Enter") {
@@ -226,6 +239,7 @@ export default class App extends React.Component {
               id="query"
               type="text"
               className="search-box__bar"
+              onFocus={()=>this.setState({isError:false}, ()=>console.log())}
               placeholder="Enter city name, country,..."
               onKeyPress={(event) => this.search(event)}
               onChange={this.onTextChange}
@@ -233,13 +247,14 @@ export default class App extends React.Component {
             />
             {this.renderSuggestions()}
           </div>
+          {this.state.isError? this.renderError():null}
           {this.state.currentLocation ? (
             <CurrentLocation
               currentLocation={this.state.currentLocation}
             />
           ) : null}
           {this.state.locations.length > 1 ? this.renderLocations() : null}
-          {/* <FavoriteList/> */}
+          <FavoriteList/>
         </main>
       </div>
     );

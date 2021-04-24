@@ -21,7 +21,25 @@
     right: 1rem;
     font-size: 2rem !important;
   }
+
+  &--favorite-list{
+    position: absolute;
+  top: 0;
+  right: 2.5rem;
+    margin: 1.5rem 1rem 1rem 0;
+  }
 }
+
+.favorite-list-icon{
+    color: rgba($color-red, 0.8);
+    font-size: 3rem;
+
+    &:hover{
+      color: rgba($color-red, 0.6);
+      transform: scale(1.1);
+    }
+  }
+
 
 .bi-heart{
   color: rgba($color-white, .8);

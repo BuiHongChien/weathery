@@ -2,71 +2,59 @@ import React from "react";
 import axios from "axios";
 
 import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import { FaHeart } from "react-icons/fa";
 
 const api = "http://localhost:5000";
 
 class FavoriteList extends React.Component {
   state = {
-    anchorEl: null,
+    listButton: false,
+    favorites: [],
   };
 
-  handleClick = (event) => {
-    console.log(event);
-    // this.setState({anchorEl:event?.currentTarget});
-  };
+  getFavorites() {
+    axios.get(`${api}/favorite`).then((res) => {
+      this.setState({ favorites: res.data }, () => console.log(this.state));
+    });
+  }
 
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
-  renderedFavoriteList = async () => {
-    try {
-      let res = await axios.get(`${api}/favorite`);
-      let favorites = res.data;
-      console.log(favorites);
-    } catch (err) {
-      console.error(err);
-    }
+  renderedFavoriteList() {
     return (
-      <Menu
-        id="simple-menu"
-        anchorEl={this.state.anchorEl}
-        keepMounted
-        open={Boolean(this.state.anchorEl)}
-        onClose={(event) => this.handleClose()}
-      >
-        {/* <MenuItem onClick={handleClose}>haha</MenuItem> */}
-        {/* {favorites.map(favorite=>{
-              console.log(favorite)
-              return(
-            <MenuItem onClick={handleClose}>haha</MenuItem>)
-          })} */}
-      </Menu>
+      <div>
+        <div className="favorite-list__wrapper">
+          <button
+            className="button favorite-list__close"
+            onClick={() => this.setState({ listButton: false })}
+          >
+            x
+          </button>
+          {this.state.favorites.length > 0 ? (
+            this.state.favorites.map((l) => {
+              return <div className="favorite-list__item">{l.name}</div>;
+            })
+          ) : (
+            <p className="favorite-list__no-city">
+              No city has added to Favorite list yet!
+            </p>
+          )}
+        </div>
+        <div class="overlay"></div>
+      </div>
     );
-  };
+  }
 
   render() {
     return (
-      <div className="favorite-list">
-        <Button
-          aria-controls="simple-menu"
-          aria-haspopup="true"
-          onClick={(event) => this.handleClick()}
+      <div>
+        <button
+          className="button button--favorite-list"
+          onClick={() =>
+            this.setState({ listButton: true }, () => this.getFavorites())
+          }
         >
           <FaHeart className="favorite-list-icon" />
-        </Button>
-
-        {this.renderedFavoriteList}
-        {/* {favorites.length>0? favorites.map(favorite=>{
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-          }):null}
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem> */}
-        {/* </Menu> */}
+        </button>
+        {this.state.listButton ? this.renderedFavoriteList() : null}
       </div>
     );
   }

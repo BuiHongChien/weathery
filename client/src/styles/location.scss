@@ -43,7 +43,7 @@
 
     &__name {
       position: absolute;
-      background:rgba($color-primary-1, 0.4);
+      background: rgba($color-primary-1, 0.4);
       color: rgba($color-white, 0.9);
       min-width: 10rem;
       max-width: 20rem;
@@ -55,7 +55,7 @@
       left: 1.4rem;
     }
 
-    &__icon{
+    &__icon {
       width: 4rem;
       height: 4rem;
     }
@@ -95,7 +95,7 @@
     margin: 0.6rem;
   }
 
-  &__info{
+  &__info {
     width: auto;
     height: auto;
     background-color: rgba($color-white, 0.85);
@@ -103,7 +103,7 @@
     padding: 5%;
   }
 
-  &__icon{
+  &__icon {
     width: 8rem;
     height: 8rem;
   }
@@ -117,7 +117,7 @@
     font-style: italic;
     font-size: 1.5rem;
 
-    sup{
+    sup {
       font-size: x-small;
     }
   }
@@ -127,15 +127,15 @@
     font-size: 7rem;
     text-align: center;
   }
-  
-  &__des{
+
+  &__des {
     font-size: 2rem;
     font-weight: 500;
     text-align: center;
     padding: 1rem 0;
 
-    &::first-letter{
-      text-transform: capitalize
+    &::first-letter {
+      text-transform: capitalize;
     }
   }
 
@@ -153,7 +153,7 @@
 
 .search-box {
   width: 100%;
-  margin:3rem 0 5rem 0;
+  margin: 3rem 0 5rem 0;
   position: relative;
 
   &__bar {
@@ -172,33 +172,33 @@
     color: rgba($color-gray, 0.1);
   }
 
-  &__suggestions{
+  &__suggestions {
     display: none;
     position: absolute;
     width: 100%;
     top: 4.6rem;
     font-size: 1.5rem;
-    left:0;
+    left: 0;
     right: 0;
     z-index: 10;
     padding: 0;
     margin: 0;
-    border-top: solid .03rem rgba($color-gray, .3);
+    border-top: solid 0.03rem rgba($color-gray, 0.3);
     box-shadow: 0 1rem 1rem rgba($color-black, 0.1);
-    border-radius: .2rem;
+    border-radius: 0.2rem;
     background-color: rgba($color-white, 1);
   }
 
-  &__suggestion{
+  &__suggestion {
     display: block;
     padding: 1.5rem;
 
-    &:hover{
-      background-color: rgba($color-gray, .1);
+    &:hover {
+      background-color: rgba($color-gray, 0.1);
     }
   }
 
-  input{
+  input {
     font-family: inherit;
   }
 
@@ -215,21 +215,78 @@
       color: rgba($color-gray, 0.2);
     }
 
-    &+.search-box__suggestions{
+    & + .search-box__suggestions {
       display: block;
     }
   }
 }
 
-.favorite-list{
-  position: absolute;
-  top: 0;
-  right: 2.5rem;
-  // width: 3rem;
-  // height: 3rem;
+// .button--favorite-list
 
-  &-icon{
-    color: rgba($color-red, 0.8);
-    font-size: 3rem;
+.favorite-list{
+  &__wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70vw;
+    height: 70vh;
+    display: flex;
+    flex-flow: wrap column;
+    align-items: center;
+    justify-content: center;
+  
+    background: linear-gradient(
+    to bottom,
+    rgba($color-white, 0.9),
+    rgba($color-primary-3, 0.9)
+  );
+    padding: 6rem;
+    border-radius: 5px;
+    box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
+    z-index: 10;
+  }
+
+  &__item{
+    width:40%;
+    padding: .5rem;
+    font-size: 2rem;
+    text-align: center;
+    margin: 1rem;
+    background-color: rgba($color-white, .6);
+  }
+
+  &__close {
+    position: absolute;
+    top: 1.2rem;
+    right: 2rem;
+    font-size: 5rem;
+    color: #333;
+    cursor: pointer;
+    border: none;
+    background: none;
   }
 }
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color-white, 0.3);
+  backdrop-filter: blur(3px);
+  z-index: 5;
+}
+
+.error-container{
+  width: 50%;
+  height: auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: rgba($color-primary-3, 0.4);
+  margin-left: 25%;
+  margin-bottom: 2rem;
+  font-size: 3rem;
+}
+
